@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'api/store.dart';
 import 'api/saleitem.dart';
 import 'cart.dart';
+import 'constant/currency_format.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -38,7 +39,7 @@ class HomeState extends State<Home> {
 
   Widget _getShoppingTile(SaleItem saleItem) {
     return ListTile(
-        title: Text('${saleItem.itemName} - \$${saleItem.price}'),
+        title: Text('${saleItem.itemName} - ${Format.toMoney(saleItem.price)}'),
         subtitle: Text(saleItem.desc),
         trailing: Row(mainAxisSize: MainAxisSize.min, children: <Widget>[
           TextButton(

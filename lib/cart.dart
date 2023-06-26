@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'api/store.dart';
 import 'api/lineItem.dart';
 import 'success.dart';
+import 'constant/currency_format.dart';
 
 class CartMenu extends StatelessWidget {
   CartMenu({super.key});
@@ -11,15 +12,15 @@ class CartMenu extends StatelessWidget {
     final List<ListTile> tiles = Store.getCart().map((LineItem item) {
       return ListTile(
           title: Text(
-              '${item.item.itemName} - \$${item.item.price} x ${item.quantity}'),
-          trailing: Text('...\$${item.getSubtotal()}'));
+              '${item.item.itemName} - ${Format.toMoney(item.item.price)} x ${item.quantity}'),
+          trailing: Text(Format.toMoney(item.getSubtotal())));
     }).toList();
 
     tiles.add(ListTile(
         title:
             const Text('Total:', style: TextStyle(fontWeight: FontWeight.bold)),
-        trailing: Text('\$${Store.getSalePrice()}',
-            style: TextStyle(fontWeight: FontWeight.bold))));
+        trailing: Text(Format.toMoney(Store.getSalePrice()),
+            style: const TextStyle(fontWeight: FontWeight.bold))));
 
     final List<Widget> divided =
         ListTile.divideTiles(context: context, tiles: tiles).toList();
