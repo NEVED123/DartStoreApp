@@ -22,15 +22,15 @@ class CartMenu extends StatelessWidget {
         trailing: Text(Format.toMoney(Store.getSalePrice()),
             style: const TextStyle(fontWeight: FontWeight.bold))));
 
-    final List<Widget> divided =
+    final List<Widget> cartPageContents =
         ListTile.divideTiles(context: context, tiles: tiles).toList();
 
+    cartPageContents.add(EnterCredentials());
+
     return Scaffold(
-        appBar: AppBar(title: const Text('Cart 🛒')),
-        body: Column(children: [
-          ListView(shrinkWrap: true, children: divided),
-          EnterCredentials()
-        ]));
+      appBar: AppBar(title: const Text('Cart 🛒')),
+      body: Scrollbar(child: ListView(children: cartPageContents)),
+    );
   }
 }
 
@@ -50,41 +50,44 @@ class EnterCredentialsState extends State<EnterCredentials> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      Text('Please enter your credentials',
-          style: TextStyle(color: failedAttempt ? Colors.red : Colors.black)),
-      Visibility(
-        visible: transactionFailed,
-        child: Text('Transaction Failed.',
-            style: TextStyle(color: Colors.red[900], fontSize: 12)),
-      ),
-      Padding(
-        padding: const EdgeInsets.all(20),
-        child: TextField(
-          readOnly: textDisabled,
-          keyboardType: TextInputType.number,
-          onChanged: (text) {
-            textValue = text;
-            purchaseDisabled = text.isEmpty ? true : false;
-            setState(() => failedAttempt = false);
-          },
-        ),
-      ),
-      TextButton(
-          child: const Text('Purchase'),
-          onPressed: () {
-            if (purchaseDisabled) {
-              setState(() => failedAttempt = true);
-              return;
-            }
+    return Padding(
+        padding: const EdgeInsets.fromLTRB(0, 0, 0, 20),
+        child: Column(children: [
+          Text('Please enter your credentials',
+              style:
+                  TextStyle(color: failedAttempt ? Colors.red : Colors.black)),
+          Visibility(
+            visible: transactionFailed,
+            child: Text('Transaction Failed.',
+                style: TextStyle(color: Colors.red[900], fontSize: 12)),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(20),
+            child: TextField(
+              readOnly: textDisabled,
+              keyboardType: TextInputType.number,
+              onChanged: (text) {
+                textValue = text;
+                purchaseDisabled = text.isEmpty ? true : false;
+                setState(() => failedAttempt = false);
+              },
+            ),
+          ),
+          TextButton(
+              child: const Text('Purchase'),
+              onPressed: () {
+                if (purchaseDisabled) {
+                  setState(() => failedAttempt = true);
+                  return;
+                }
 
-            if (Store.processPayment(textValue)) {
-              _paymentSuccessful();
-            } else {
-              setState(() => transactionFailed = true);
-            }
-          })
-    ]);
+                if (Store.processPayment(textValue)) {
+                  _paymentSuccessful();
+                } else {
+                  setState(() => transactionFailed = true);
+                }
+              })
+        ]));
   }
 
   void _paymentSuccessful() {
