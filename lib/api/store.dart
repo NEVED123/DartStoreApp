@@ -34,7 +34,7 @@ class Store {
     _addSaleItem(
         14, '🈳 Whatever this is', 4.00, "It looks kinda cool I guess");
     _addSaleItem(15, '☢️ Nuclear waste', 1000.00,
-        "It gives you super powers, who would'nt want that!");
+        "It gives you super powers, who wouldn't want that!");
   }
 
   static List<SaleItem> getSaleItems() {
@@ -122,5 +122,11 @@ class Store {
     }
 
     return selectedItem;
+  }
+
+  static bool cartEmpty() {
+    if (_sale == null) return false;
+
+    return _sale!.getCart().isEmpty;
   }
 }

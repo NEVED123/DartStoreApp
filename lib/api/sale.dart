@@ -43,8 +43,10 @@ class Sale {
       return false;
     } else {
       //Item exists, decrement the quantity
-      if (duplicate.quantity - quantity >= 0) {
+      if (duplicate.quantity - quantity > 0) {
         duplicate.quantity -= quantity;
+      } else if (duplicate.quantity - quantity == 0) {
+        _lineItems.remove(duplicate);
       } else {
         return false;
       }
