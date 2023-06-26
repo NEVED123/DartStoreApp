@@ -8,8 +8,8 @@ class SaleItem {
 
   @override
   String toString() {
-    return 'Item: ${itemName}, Price: ${price}, Description: ${desc}';
+    return 'Item: $itemName, Price: $price, Description: $desc';
   }
 
-  static SaleItem emptySaleItem = SaleItem(-1, '', 0, '');
+  static SaleItem emptySaleItem = const SaleItem(-1, '', 0, '');
 }

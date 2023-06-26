@@ -17,4 +17,6 @@ class LineItem {
   double getSubtotal() {
     return item.price * quantity;
   }
+
+  static LineItem emptyLineItem = new LineItem(SaleItem.emptySaleItem, 0);
 }

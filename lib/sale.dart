@@ -1,8 +1,11 @@
 import 'lineItem.dart';
 import 'saleitem.dart';
 
+/**
+ * Manages a sale for a single customer
+ */
 class Sale {
-  List<LineItem> _lineItems = <LineItem>[];
+  final List<LineItem> _lineItems = <LineItem>[];
 
   List<LineItem> getCart() {
     return _lineItems;
@@ -14,7 +17,7 @@ class Sale {
         orElse: () => emptyLineItem);
 
     if (duplicate == emptyLineItem) {
-      _lineItems.add(new LineItem(item, quantity));
+      _lineItems.add(LineItem(item, quantity));
     } else {
       //Item already exists, add to the quantity
       duplicate.quantity += quantity;
@@ -28,6 +31,28 @@ class Sale {
 
   bool removeFromCart(SaleItem item) {
     _lineItems.removeWhere((lineItem) => lineItem.item.id == item.id);
+    return true;
+  }
+
+  bool decrementCartItem(SaleItem item, int quantity) {
+    LineItem duplicate = _lineItems.firstWhere(
+        (curr) => curr.item.id == item.id,
+        orElse: () => emptyLineItem);
+
+    if (duplicate == emptyLineItem) {
+      return false;
+    } else {
+      //Item exists, decrement the quantity
+      if (duplicate.quantity - quantity >= 0) {
+        duplicate.quantity -= quantity;
+      } else {
+        return false;
+      }
+    }
+
+    //Sort cart
+    _lineItems.sort((x, y) => x.item.id.compareTo(y.item.id));
+
     return true;
   }
 
